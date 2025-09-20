@@ -66,13 +66,40 @@ const winner = {
   },
 };
 
+let userPoints = 0;
+let computerPoints = 0;
+
+const resetGame = () => {
+  userPoints = 0;
+  computerPoints = 0;
+  points.textContent = "Oyuncu 0 : 0 Komputer";
+  computerGuess.textContent = "Komputerin texmini: ";
+};
+
 const playGame = (userGuess) => {
   const compGuess = plays[Math.floor(Math.random() * 3)];
   const text = winner[userGuess](compGuess);
-  console.log(userGuess, compGuess, winner[userGuess](compGuess));
+  if (userPoints === 9) {
+    alert("Oyun bitdi. Oyuncu qazandi.");
+    resetGame();
+    return;
+  } else if (computerPoints === 9) {
+    alert("Oyun bitdi. Komputer qazandi.");
 
-  points.textContent = text;
-  computerGuess.textContent = compGuess + "  " + userGuess;
+    resetGame();
+    return;
+  }
+
+  if (text === "win") {
+    userPoints++;
+    points.textContent = `Oyuncu ${userPoints} : ${computerPoints} Komputer`;
+  } else if (text === "lose") {
+    computerPoints++;
+    points.textContent = `Oyuncu ${userPoints} : ${computerPoints} Komputer`;
+  } else {
+    points.textContent = `Oyuncu ${userPoints} : ${computerPoints} Komputer`;
+  }
+  computerGuess.textContent = `Komputerin texmini: ${compGuess}`;
 };
 
 rock.addEventListener("click", () => playGame("rock"));
